@@ -14,6 +14,7 @@ defmodule LambdaStudyGroupBot.Mixfile do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      [applications: [:nadia]]      
       extra_applications: [:logger]
     ]
   end
