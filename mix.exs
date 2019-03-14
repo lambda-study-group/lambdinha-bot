@@ -1,28 +1,31 @@
-defmodule LambdaStudyGroupBot.Mixfile do
+defmodule App.Mixfile do
   use Mix.Project
 
   def project do
-    [
-      app: :lambda_study_group_bot,
-      version: "0.1.0",
-      elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
-      deps: deps()
-    ]
+    [app: :app,
+     version: "0.1.0",
+     elixir: "~> 1.3",
+     default_task: "server",
+     build_embedded: Mix.env == :prod,
+     start_permanent: Mix.env == :prod,
+     deps: deps(),
+     aliases: aliases()]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
-    [
-      [applications: [:nadia]]      
-      extra_applications: [:logger]
-    ]
+    [applications: [:logger, :nadia, :httpoison],
+     mod: {App, []}]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nadia, "~> 0.4.2"}
+      {:nadia, "0.4.4"},
+      {:poison, "~> 3.1"},
+      {:httpoison, "~>1.1.1"}
     ]
+  end
+
+  defp aliases do
+    [server: "run --no-halt"]
   end
 end
