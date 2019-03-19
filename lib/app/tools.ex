@@ -47,7 +47,7 @@ defmodule App.Tools do
   end
 
   def get_joke do
-    HTTPoison.get("https://raw.githubusercontent.com/lambda-study-group/functional-jokes/master/jokes.json")
+    HTTPoison.get("https://raw.githubusercontent.com/lambda-study-group/lambdinha-bot/blob/master/jokes.json")
     |> handle_response
     |> extract_joke
   end
