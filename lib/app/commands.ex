@@ -37,9 +37,4 @@ defmodule App.Commands do
     App.Tools.get_joke
     |> send_message
   end
-
-  message do
-    Logger.log :warn, "Did not match the message"
-    send_message "Não consegui te entender :("
-  end
 end

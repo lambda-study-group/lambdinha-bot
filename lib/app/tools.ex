@@ -31,7 +31,8 @@ defmodule App.Tools do
 
   def extract_joke(map) do
     {:ok, body} = map
-    Enum.random body
+    item = Enum.random body
+    '#{item["joke"]}'
   end
 
   def get_ranking do
@@ -47,7 +48,7 @@ defmodule App.Tools do
   end
 
   def get_joke do
-    HTTPoison.get("https://raw.githubusercontent.com/lambda-study-group/functional-jokes/master/jokes.json")
+    HTTPoison.get("https://raw.githubusercontent.com/lambda-study-group/lambdinha-bot/master/jokes.json")
     |> handle_response
     |> extract_joke
   end
