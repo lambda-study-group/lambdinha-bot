@@ -17,24 +17,27 @@ defmodule App.Commands do
 
   command ["desafios", "desafio", "challenges", "challenge"] do
     Logger.log :info, "Command /desafios | /desafio | /challenges | /challenge"
-    App.Tools.get_challenges
+    App.Tools.get_args(update.message.text)
+    |> App.Tools.get_challenges
     |> send_message
   end
 
   command "ranking" do 
     Logger.log :info, "Command /ranking"
-    App.Tools.get_ranking
+    App.Tools.get_args(update.message.text)
+    |> App.Tools.get_ranking
+    |> send_message
+  end
+
+  command "joke" do
+    Logger.log :info, "Command /joke"
+    App.Tools.get_args(update.message.text)
+    |> App.Tools.get_joke
     |> send_message
   end
 
   command "help" do
     Logger.log :info, "Command /help"
     send_message "Lista de comandos: /welcome, /monads, /ranking, /desafios, /help, /joke"  
-  end
-
-  command "joke" do
-    Logger.log :info, "Command /joke"
-    App.Tools.get_joke
-    |> send_message
   end
 end
