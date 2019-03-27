@@ -40,4 +40,15 @@ defmodule App.Commands do
     Logger.log :info, "Command /help"
     send_message "Lista de comandos: /welcome, /monads, /ranking, /desafios, /help, /joke"  
   end
+
+  command "xkcd" do
+    Logger.log :info, "Command /xkcd"
+    App.Tools.get_args(update.message.text)
+    |> App.Tools.get_xkcd
+    |> send_message
+  end
+
+  # just avoiding errors when no command is found
+  message do
+  end
 end

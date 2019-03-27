@@ -55,9 +55,17 @@ defmodule App.Tools do
 
   def extract_ranking(map, top) do
     {:ok, body} = map
-      Enum.reduce Enum.slice(body, 0, digit_to_int top), [], fn (item, res) -> 
+    Enum.reduce Enum.slice(body, 0, digit_to_int top), [], fn (item, res) -> 
       res ++ ['#{item["ranking"]} - #{item["user"]} - #{item["pontuation"]} \n']
     end
+  end
+
+
+  # XKCD extraction
+
+  def extract_xkcd(map) do
+    {:ok, body} = map
+    body["img"]
   end
 
   # Joke extraction 
@@ -94,4 +102,17 @@ defmodule App.Tools do
     |> handle_response
     |> extract_joke(number)
   end
+
+  def get_xkcd(_number = "") do
+    HTTPoison.get("https://xkcd.com/info.0.json")
+    |> handle_response
+    |> extract_xkcd
+  end
+
+  def get_xkcd(number) do
+    HTTPoison.get("https://xkcd.com/" <> number <> "/info.0.json")
+    |> handle_response
+    |> extract_xkcd
+  end
+
 end
