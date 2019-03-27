@@ -40,5 +40,13 @@
     },
     {
         "joke": "https://qphl.fs.quoracdn.net/main-qimg-c27ab68426981d432144ca27a4d99988.webp"
+    },
+    {
+        "joke": "The problem with Haskell is that it is a language built on lazy evaluation and nobody actually called for it"
+    },
+    {
+        "joke": "https://imgs.xkcd.com/comics/haskell.png"
     }
+ 
+
 ]
