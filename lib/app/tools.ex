@@ -14,7 +14,7 @@ defmodule App.Tools do
     Enum.join(args, " ")
   end
 
-  # returns only the first digit as an integer
+  # returns only the first digits as an integer
   def digit_to_int(digit) do
     {number, _rest} = Integer.parse(digit)
     number
@@ -68,6 +68,13 @@ defmodule App.Tools do
     body["img"]
   end
 
+  def random_xkcd_number(map) do
+    {:ok, body} = map
+    n = body["num"]
+    Enum.random(1..n)
+  end
+
+
   # Joke extraction 
 
   def extract_joke(map, _number="") do
@@ -106,11 +113,12 @@ defmodule App.Tools do
   def get_xkcd(_number = "") do
     HTTPoison.get("https://xkcd.com/info.0.json")
     |> handle_response
-    |> extract_xkcd
+    |> random_xkcd_number 
+    |> get_xkcd
   end
 
   def get_xkcd(number) do
-    HTTPoison.get("https://xkcd.com/" <> number <> "/info.0.json")
+    HTTPoison.get("https://xkcd.com/#{number}/info.0.json")
     |> handle_response
     |> extract_xkcd
   end
