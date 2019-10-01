@@ -12,7 +12,7 @@ defmodule App.Commands do
  
   command "monads" do
     Logger.log :info, "Command /monads"
-    send_message "Monads are just monoids in the cathegory of endofunctors."
+    send_message "Monads are just monoids in the category of endofunctors."
   end
 
   command ["desafios", "desafio", "challenges", "challenge"] do
