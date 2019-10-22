@@ -1,12 +1,12 @@
 defmodule App.Tools do
-  require Logger 
+  require Logger
 
   defmacro __using__(_opts) do
     quote do
 
     end
   end
-  
+
   # returns array of args as
   # "/command 1 2 3" -> "1 2 3"
   def get_args(text) do

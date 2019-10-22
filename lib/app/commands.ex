@@ -49,8 +49,6 @@ defmodule App.Commands do
   end
 
   command "kick" do
-    # Logger.log :info, "Command /kick " <> App.Tools.get_mentioned_users(update.message.entities)
-    # Logger.log :info, "Command /kick " <> update.message.chat.type
 
     if update.message.chat.type == "private" do
       Logger.log :error, "Command cannot be run in private chats"
@@ -58,26 +56,19 @@ defmodule App.Commands do
       :error
     else
 
-      {:ok, %Nadia.Model.User{id: my_id}} = get_me()
-      {:ok, %Nadia.Model.ChatMember{status: my_status}} = get_chat_member(my_id)
-
-      if !(Enum.member? ["administrator", "creator"], my_status) do
-        send_message "I do not have enough permission to /kick a user"
-      else
-        Enum.map(
-          App.Tools.get_mentioned_users(update.message.entities),
-          fn user_id ->
-            # Logger.log :info, "kicking user " <> Integer.to_string user_id
-            case (kick_chat_member user_id) do
-              {:error, error} ->
-                Logger.log :error, error.reason
-                send_message "I do not have enough permission to /kick a user"
-              _ ->
-                Logger.log :info, "Kicked User"
-            end
+      # Check if Bot is admin is skipped, as APi later on would check if bot is Admin or not anyway
+      Enum.map(
+        App.Tools.get_mentioned_users(update.message.entities),
+        fn user_id ->
+          case (kick_chat_member user_id) do
+            {:error, error} ->
+              Logger.log :error, error.reason
+              send_message "I do not have enough permission to /kick a user"
+            _ ->
+              Logger.log :info, "Kicked User"
           end
-        )
-      end
+        end
+      )
     end
   end
 
