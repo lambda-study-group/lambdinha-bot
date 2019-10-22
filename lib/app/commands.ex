@@ -48,6 +48,30 @@ defmodule App.Commands do
     |> send_message
   end
 
+  command "kick" do
+    # Logger.log :info, "Command /kick " <> App.Tools.get_mentioned_users(update.message.entities)
+    # Logger.log :info, "Command /kick " <> update.message.chat.type
+
+    if update.message.chat.type == "private" do
+      Logger.log :error, "Command cannot be run in private chats"
+      :error
+    else
+      # TODO: Check if Bot has 'admin' permission to kick someone
+
+      Enum.map(
+        App.Tools.get_mentioned_users(update.message.entities),
+        fn user_id ->
+          # Logger.log :info, "kicking user " <> Integer.to_string user_id
+          case (kick_chat_member user_id) do
+            {:error, error} -> Logger.log :error, error.reason
+            _ -> Logger.log :info, "Kicked User"
+          end
+        end
+      )
+    end
+
+  end
+
   # just avoiding errors when no command is found
   message do
   end

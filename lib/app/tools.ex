@@ -14,6 +14,20 @@ defmodule App.Tools do
     Enum.join(args, " ")
   end
 
+  # Takes entities in message body as argument,
+  # and returns a list of user_id that have been mentioned in message
+  # /kick @User_1 @User_2 -> 184564595 284564595
+  def get_mentioned_users(entities) do
+    # Logger.log(:info, Enum.join(Enum.map(entities, fn (e) -> e.type end), " "))
+    Enum.filter(
+      entities,
+      fn (entity) ->
+        entity.type == "text_mention"
+      end
+    )
+    |> Enum.map(fn (entity) -> entity.user.id end)
+  end
+
   # returns only the first digits as an integer
   def digit_to_int(digit) do
     {number, _rest} = Integer.parse(digit)
