@@ -67,13 +67,13 @@ defmodule App.Commands do
         # If insufficient permission, send error to Chat Group.
         if !(Enum.member? ["administrator", "creator"], user_status) do
           Logger.log :error, "User does not have enough permissions to kick another user"
-          {:error, message: "I do not have enough permission to /kick a user"}
+          {:error, message: "You do not have enough permission to /kick a user"}
         else
           if !(Enum.member? ["administrator", "creator"], my_status) do
             Logger.log :error, "Bot does not have enough permissions to kick a user"
             {:error, message: "I do not have enough permission to /kick a user"}
           else
-            {:ok, message: ""}
+            {:ok}
           end
         end
       end
@@ -88,7 +88,7 @@ defmodule App.Commands do
             case (kick_chat_member user_id) do
               {:error, error} ->
                 Logger.log :error, error.reason
-                send_message "An error occurred while kicking the user"
+                send_message "An error occurred while kicking the user\n" <> error.reason
               _ ->
                 Logger.log :info, "Kicked User"
             end
