@@ -50,23 +50,38 @@ defmodule App.Commands do
 
   command "kick" do
 
-    # Validate if Chat Type 'private', kick not available.
-    if update.message.chat.type == "private" do
-      Logger.log :error, "Command cannot be run in private chats"
-      send_message "Cannot run /kick in private chats. Who you kinkin'?"
-      :error
-    else
-
-      # Get user details to get Bot id
-      {:ok, %Nadia.Model.User{id: my_id}} = get_me()
-      # Get Chat Member details for this chat to get Bot permissions
-      {:ok, %Nadia.Model.ChatMember{status: my_status}} = get_chat_member(my_id)
-
-      # If insufficient permission, send error to Chat Group.
-      # Else trigger kick user.
-      if !(Enum.member? ["administrator", "creator"], my_status) do
-        send_message "I do not have enough permission to /kick a user"
+    # Validate if Chat Type 'private', create error kick not available.
+    validate =
+      if update.message.chat.type == "private" do
+        Logger.log :error, "Command cannot be run in private chats"
+        {:error, message: "Cannot run /kick in private chats. Who you kinkin'?"}
       else
+        # Get Bot details to get Bot id
+        {:ok, %Nadia.Model.User{id: my_id}} = get_me()
+        # Get Chat Member details for this chat to get Bot permissions
+        {:ok, %Nadia.Model.ChatMember{status: my_status}} = get_chat_member(my_id)
+
+        # Get Chat Member details to get User Permissions and check for admin / creator
+        {:ok, %Nadia.Model.ChatMember{status: user_status}} = get_chat_member(update.message.from.id)
+
+        # If insufficient permission, send error to Chat Group.
+        if !(Enum.member? ["administrator", "creator"], user_status) do
+          Logger.log :error, "User does not have enough permissions to kick another user"
+          {:error, message: "I do not have enough permission to /kick a user"}
+        else
+          if !(Enum.member? ["administrator", "creator"], my_status) do
+            Logger.log :error, "Bot does not have enough permissions to kick a user"
+            {:error, message: "I do not have enough permission to /kick a user"}
+          else
+            {:ok, message: ""}
+          end
+        end
+      end
+
+    case validate do
+      {:error, message: message} ->
+        send_message message
+      {:ok} ->
         Enum.map(
           App.Tools.get_mentioned_users(update.message.entities),
           fn user_id ->
@@ -79,7 +94,6 @@ defmodule App.Commands do
             end
           end
         )
-      end
     end
   end
 

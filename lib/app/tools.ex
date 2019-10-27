@@ -7,16 +7,22 @@ defmodule App.Tools do
     end
   end
 
-  # returns array of args as
-  # "/command 1 2 3" -> "1 2 3"
+  @doc """
+  returns array of args as
+  "/command 1 2 3" -> "1 2 3"
+  """
   def get_args(text) do
     [_c | args] = String.split(text, " ")
     Enum.join(args, " ")
   end
 
-  # Takes entities in message body as argument,
-  # and returns a list of user_id that have been mentioned in message
-  # /kick @User_1 @User_2 -> 184564595 284564595
+  @doc """
+  ## Description
+    Takes entities in message body as argument,
+    and returns a list of user_id that have been mentioned in message
+  ## Example
+    /kick @User_1 @User_2 -> 184564595 284564595
+  """
   def get_mentioned_users(entities) do
     Enum.filter(
       entities,
