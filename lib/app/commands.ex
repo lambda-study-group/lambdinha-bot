@@ -7,7 +7,7 @@ defmodule App.Commands do
 
   command "welcome" do
     Logger.log :info, "Command /welcome"
-    send_message "Seja bem vindo ao Lambda Study Group! Leia as regras do grupo no pinado e visite nosso GitHub: https://github.com/lambda-study-group"
+    send_message "Seja bem vindo ao Lambda Study Group! Leia as regras do grupo no pinado e visite nosso GitHub(https://github.com/lambda-study-group) ou nosso site(https://lambda-study-group.github.io). Digite /ajuda para ver mais comandos!"
   end
 
   command "monads" do
@@ -36,9 +36,9 @@ defmodule App.Commands do
     |> send_message
   end
 
-  command "help" do
-    Logger.log :info, "Command /help"
-    send_message "Lista de comandos: /welcome, /monads, /ranking, /desafios, /help, /joke"
+  command "ajuda" do
+    Logger.log :info, "Command /ajuda"
+    send_message "Lista de comandos: /welcome, /monads, /ranking, /desafios, /ajuda, /joke, /xkcd /kick"
   end
 
   command "xkcd" do
