@@ -13,6 +13,11 @@ defmodule App.Commander do
   end
 
   # Sender Macros
+  defmacro get_me() do
+    quote do
+      Nadia.get_me
+    end
+  end
 
   defmacro answer_callback_query(options \\ []) do
     quote bind_quoted: [options: options] do

@@ -1,17 +1,36 @@
 defmodule App.Tools do
-  require Logger 
+  require Logger
 
   defmacro __using__(_opts) do
     quote do
 
     end
   end
-  
-  # returns array of args as
-  # "/command 1 2 3" -> "1 2 3"
+
+  @doc """
+  returns array of args as
+  "/command 1 2 3" -> "1 2 3"
+  """
   def get_args(text) do
     [_c | args] = String.split(text, " ")
     Enum.join(args, " ")
+  end
+
+  @doc """
+  ## Description
+    Takes entities in message body as argument,
+    and returns a list of user_id that have been mentioned in message
+  ## Example
+    /kick @User_1 @User_2 -> 184564595 284564595
+  """
+  def get_mentioned_users(entities) do
+    Enum.filter(
+      entities,
+      fn (entity) ->
+        entity.type == "text_mention"
+      end
+    )
+    |> Enum.map(fn (entity) -> entity.user.id end)
   end
 
   # returns only the first digits as an integer
@@ -33,7 +52,7 @@ defmodule App.Tools do
 
   def extract_challenges(map, _number = "") do
     {:ok, body} = map
-    Enum.reduce body, [], fn (item, res) -> 
+    Enum.reduce body, [], fn (item, res) ->
       res ++ ['#{item["name"]} - soluções: #{item["solutions"]} - #{item["link"]} \n']
     end
   end
@@ -44,18 +63,18 @@ defmodule App.Tools do
     '#{item["name"]} - soluções: #{item["solutions"]} - #{item["link"]} \n'
   end
 
-  # Ranking extraction 
+  # Ranking extraction
 
   def extract_ranking(map, _top = "") do
     {:ok, body} = map
-    Enum.reduce body, [], fn (item, res) -> 
+    Enum.reduce body, [], fn (item, res) ->
       res ++ ['#{item["ranking"]} - #{item["user"]} - #{item["pontuation"]} \n']
     end
   end
 
   def extract_ranking(map, top) do
     {:ok, body} = map
-    Enum.reduce Enum.slice(body, 0, digit_to_int top), [], fn (item, res) -> 
+    Enum.reduce Enum.slice(body, 0, digit_to_int top), [], fn (item, res) ->
       res ++ ['#{item["ranking"]} - #{item["user"]} - #{item["pontuation"]} \n']
     end
   end
@@ -75,9 +94,9 @@ defmodule App.Tools do
   end
 
 
-  # Joke extraction 
+  # Joke extraction
 
-  def extract_joke(map, _number="") do
+  def extract_joke(map, _number = "") do
     {:ok, body} = map
     item = Enum.random body
     '#{item["joke"]}'
@@ -88,7 +107,7 @@ defmodule App.Tools do
     item = Enum.at(body, digit_to_int number)
     '#{item["joke"]}'
   end
-  
+
 
   # Command functions
 
@@ -113,7 +132,7 @@ defmodule App.Tools do
   def get_xkcd(_number = "") do
     HTTPoison.get("https://xkcd.com/info.0.json")
     |> handle_response
-    |> random_xkcd_number 
+    |> random_xkcd_number
     |> get_xkcd
   end
 
