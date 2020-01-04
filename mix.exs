@@ -9,6 +9,12 @@ defmodule App.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
+    releases: [
+      lambdinha: [
+        include_executables_for: [:unix],
+        applications: [runtime_tools: :permanent]
+      ]
+    ],
      aliases: aliases()]
   end
 
