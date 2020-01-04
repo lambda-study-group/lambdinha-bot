@@ -46,7 +46,7 @@ defmodule App.Poller do
     |> List.last
   end
   defp process_messages({:error, %Nadia.Model.Error{reason: reason}}) do
-    Logger.log :error, reason
+    Logger.log :error, "Reason: #{Kernel.inspect(reason)}"
 
     -1
   end
@@ -55,8 +55,7 @@ defmodule App.Poller do
 
     -1
   end
-
-  defp process_message(nil), do: IO.puts "nil"
+  defp process_message(nil), do: IO.inspect "nil"
   defp process_message(message) do
     try do
       App.Matcher.match message

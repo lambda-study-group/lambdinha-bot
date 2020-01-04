@@ -27,7 +27,8 @@ defmodule App.Mixfile do
     [
       {:nadia, "0.4.4"},
       {:poison, "~> 3.1"},
-      {:httpoison, "~>1.1.1"}
+      {:httpoison, "~>1.1.1"},
+      {:hackney, github: "benoitc/hackney", override: true}
     ]
   end
 
